@@ -112,6 +112,7 @@
     [textField addTarget:self action:@selector(textFieldEditingChanged:) forControlEvents:UIControlEventEditingChanged];
     [textField addTarget:self action:@selector(textFieldEditingDidEndOnExit:) forControlEvents:UIControlEventEditingDidEndOnExit];
     [textField addTarget:self action:@selector(textFieldEditingDidEnd:) forControlEvents:UIControlEventEditingDidEnd];
+    [textField addTarget:self action:@selector(textFieldEditingDidEndNoExit:) forControlEvents:UIControlEventEditingDidEnd];
 }
 
 - (void)wireUpTextView
@@ -126,6 +127,7 @@
     [inputControl addTarget:self action:@selector(inputControlEditingDidBegin:) forControlEvents:UIControlEventEditingDidBegin];
     [inputControl addTarget:self action:@selector(inputControlEditingDidEndOnExit:) forControlEvents:UIControlEventEditingDidEndOnExit];
     [inputControl addTarget:self action:@selector(inputControlEditingDidEnd:) forControlEvents:UIControlEventEditingDidEnd];
+    [inputControl addTarget:self action:@selector(inputControlEditingDidEndNoExit:) forControlEvents:UIControlEventEditingDidEnd];
 }
 
 - (void)wireUpUserControl
@@ -159,6 +161,7 @@
     [textField removeTarget:self action:@selector(textFieldEditingChanged:) forControlEvents:UIControlEventEditingChanged];
     [textField removeTarget:self action:@selector(textFieldEditingDidEndOnExit:) forControlEvents:UIControlEventEditingDidEndOnExit];
     [textField removeTarget:self action:@selector(textFieldEditingDidEnd:) forControlEvents:UIControlEventEditingDidEnd];
+    [textField removeTarget:self action:@selector(textFieldEditingDidEndNoExit:) forControlEvents:UIControlEventEditingDidEnd];
     if (textField.delegate == self) textField.delegate = nil;
 }
 
