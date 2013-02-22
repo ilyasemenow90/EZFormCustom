@@ -399,6 +399,14 @@
     [self scrollFormFieldToVisible:formField];
 }
 
+- (void)formFieldInputFinishedNoExit:(EZFormField *)formField
+{
+    __strong id<EZFormDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(form:fieldDidEndEditing:)]) {
+        [delegate form:self fieldDidEndEditing:formField];
+    }
+}
+
 - (void)formFieldInputFinished:(EZFormField *)formField
 {
     EZFormField *nextFormField = nil;

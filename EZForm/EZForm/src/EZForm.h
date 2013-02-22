@@ -256,6 +256,17 @@ typedef enum : NSInteger {
  */
 - (void)form:(EZForm *)form didUpdateValueForField:(EZFormField *)formField modelIsValid:(BOOL)isValid;
 
+/** Tells the delegate that editing ended for the specified field.
+ *
+ *  This method tells the delegate that the specified field became the first
+ *  responder.
+ *
+ *  @param form The form containing the field for which editing ended.
+ *
+ *  @param formField The form field for which editing ended.
+ */
+- (void)form:(EZForm *)form fieldDidEndEditing:(EZFormField *)formField;
+
 /** Tells the delegate that the user finished form input on the last field.
  *
  *  This is normally called when the user hits the return key on the last

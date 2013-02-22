@@ -102,6 +102,7 @@
     textField.delegate = self;
     [textField addTarget:self action:@selector(textFieldEditingChanged:) forControlEvents:UIControlEventEditingChanged];
     [textField addTarget:self action:@selector(textFieldEditingDidEndOnExit:) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [textField addTarget:self action:@selector(textFieldEditingDidEndNoExit:) forControlEvents:UIControlEventEditingDidEnd];
 }
 
 - (void)wireUpTextView
@@ -115,6 +116,7 @@
     EZFormInputControl *inputControl = (EZFormInputControl *)self.userControl;
     [inputControl addTarget:self action:@selector(inputControlEditingDidBegin:) forControlEvents:UIControlEventEditingDidBegin];
     [inputControl addTarget:self action:@selector(inputControlEditingDidEndOnExit:) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [inputControl addTarget:self action:@selector(inputControlEditingDidEndNoExit:) forControlEvents:UIControlEventEditingDidEnd];
 }
 
 - (void)wireUpUserControl
@@ -145,6 +147,7 @@
     UITextField *textField = (UITextField *)self.userControl;
     [textField removeTarget:self action:@selector(textFieldEditingChanged:) forControlEvents:UIControlEventEditingChanged];
     [textField removeTarget:self action:@selector(textFieldEditingDidEndOnExit:) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [textField removeTarget:self action:@selector(textFieldEditingDidEndNoExit:) forControlEvents:UIControlEventEditingDidEnd];
     if (textField.delegate == self) textField.delegate = nil;
 }
 
@@ -182,6 +185,14 @@
     [self updateValidityIndicators];
 }
 
+- (void)textFieldEditingDidEndNoExit:(id)sender
+{
+    #pragma unused(sender)
+    
+    __strong EZForm *form = self.form;
+    [form formFieldInputFinishedNoExit:self];
+}
+
 - (void)textFieldEditingDidEndOnExit:(id)sender
 {
     #pragma unused(sender)
@@ -198,6 +209,14 @@
     #pragma unused(sender)
     __strong EZForm *form = self.form;
     [form formFieldDidBeginEditing:self];
+}
+
+- (void)inputControlEditingDidEndNoExit:(id)sender
+{
+    #pragma unused(sender)
+    
+    __strong EZForm *form = self.form;
+    [form formFieldInputFinishedNoExit:self];
 }
 
 - (void)inputControlEditingDidEndOnExit:(id)sender
