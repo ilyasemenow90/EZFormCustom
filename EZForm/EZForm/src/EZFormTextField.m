@@ -130,6 +130,11 @@
     [inputControl addTarget:self action:@selector(inputControlEditingDidEndNoExit:) forControlEvents:UIControlEventEditingDidEnd];
 }
 
+- (void)wireUpButton
+{
+    //nothing to do
+}
+
 - (void)wireUpUserControl
 {
     if ([self.userControl isKindOfClass:[UITextField class]]) {
@@ -142,6 +147,8 @@
 	[self wireUpInputControl];
     }
     else if ([self.userControl isKindOfClass:[UIButton class]]) {
+
+    [self wireUpButton];
     }
     
 
