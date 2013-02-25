@@ -96,6 +96,15 @@
     [self updateView];
 }
 
+- (void)useButton:(UIButton *)button
+{
+    [self unwireUserControl];
+    
+    self.userControl = button;
+    [self wireUpUserControl];
+    [self updateView];
+}
+
 - (void)wireUpTextField
 {
     UITextField *textField = (UITextField *)self.userControl;
@@ -119,6 +128,11 @@
     [inputControl addTarget:self action:@selector(inputControlEditingDidEndNoExit:) forControlEvents:UIControlEventEditingDidEnd];
 }
 
+- (void)wireUpButton
+{
+    //nothing to do
+}
+
 - (void)wireUpUserControl
 {
     if ([self.userControl isKindOfClass:[UITextField class]]) {
@@ -129,6 +143,9 @@
     }
     else if ([self.userControl isKindOfClass:[EZFormInputControl class]]) {
 	[self wireUpInputControl];
+    }
+    else if ([self.userControl isKindOfClass:[UIButton class]]) {
+    [self wireUpButton];
     }
     
 
@@ -157,6 +174,11 @@
     if (textView.delegate == self) textView.delegate = nil;
 }
 
+- (void)unwireButton
+{
+    //nothing to do
+}
+
 - (void)unwireUserControl
 {
     if ([self.userControl isKindOfClass:[UITextField class]]) {
@@ -165,7 +187,9 @@
     else if ([self.userControl isKindOfClass:[UITextView class]]) {
 	[self unwireTextView];
     }
-    
+    else if ([self.userControl isKindOfClass:[UIButton class]]) {
+    [self unwireButton];
+    }
     __strong EZForm *form = self.form;
     if (self.userControl.inputAccessoryView == [form inputAccessoryView] && [self.userControl respondsToSelector:@selector(setInputAccessoryView:)]) {
 	// set standard input accessory view, only if one not already assigned
@@ -283,7 +307,10 @@
 
 - (void)updateUIWithValue:(NSString *)value
 {
-    if ([(id)self.userControl respondsToSelector:NSSelectorFromString(@"setText:")]) {
+    if ([self.userControl isKindOfClass:[UIButton class]]){
+        [(UIButton*)self.userControl setTitle:value forState:UIControlStateNormal];
+    }
+    else if ([(id)self.userControl respondsToSelector:NSSelectorFromString(@"setText:")]) {
 	[(id)self.userControl setText:value];
     }
     

@@ -27,6 +27,7 @@
 typedef enum {
     EZFormGenericFieldUserControlTypeNone = 0,
     EZFormGenericFieldUserControlTypeLabel = 1,
+    EZFormGenericFieldUserControlTypeButton = 2,
 } EZFormGenericFieldUserControlType;
 
 
@@ -59,6 +60,14 @@ typedef enum {
     [self updateUI];
 }
 
+- (void)useButton:(UIButton *) button
+{
+    [self unwireUserControl];
+    
+    self.userControl = button;
+    self.userControlType = EZFormGenericFieldUserControlTypeButton;
+    [self updateUI];
+}
 
 #pragma mark - Private methods
 
@@ -69,12 +78,18 @@ typedef enum {
 
 - (void)updateUIWithValue:(id)value
 {
+    NSString *string = nil;
     if (EZFormGenericFieldUserControlTypeLabel == self.userControlType) {
-	NSString *string = nil;
 	if (value) {
 	    string = [NSString stringWithFormat:@"%@", value];
 	}
 	[(UILabel *)self.userControl setText:string];
+    }
+    else if (EZFormGenericFieldUserControlTypeButton == self.userControlType){
+    if (value) {
+        string = [NSString stringWithFormat:@"%@", value];
+    }
+    [(UIButton *)self.userControl setTitle:string forState:UIControlStateNormal];
     }
 }
 

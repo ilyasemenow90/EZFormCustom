@@ -51,4 +51,15 @@
  */
 - (void)useLabel:(UIView *)label;
 
+/** Wire up a UIButton to the form field.
+ *
+ *  The UIButton is used to display the
+ *  value of the form field. The view is automatically updated when the
+ *  value changes.
+ *
+ *  @param button A UIButton.
+ */
+- (void)useButton:(UIButton *) button;
+
+
 @end
