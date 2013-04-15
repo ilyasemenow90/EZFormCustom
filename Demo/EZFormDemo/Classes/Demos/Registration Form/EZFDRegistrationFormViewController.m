@@ -36,6 +36,7 @@ static NSString * const EZFDRegistrationFormGenderKey = @"gender";
 static NSString * const EZFDRegistrationFormEmailKey = @"email";
 static NSString * const EZFDRegistrationFormSubscribeKey = @"subscribe";
 static NSString * const EZFDRegistrationFormLikesKey = @"likes";
+static NSString * const EZFDRegistrationFormDateKey = @"date";
 static NSString * const EZFDRegistrationFormBioKey = @"bio";
 static NSString * const EZFDRegistrationFormAcceptTermsKey = @"acceptterms";
 
@@ -106,13 +107,40 @@ static NSString * const EZFDRegistrationFormAcceptTermsKey = @"acceptterms";
     [_registrationForm addFormField:ageField];
     
     /*
-     *
+     * Single-selection (radio) field
      */
     EZFormRadioField *genderField = [[EZFormRadioField alloc] initWithKey:EZFDRegistrationFormGenderKey];
     [genderField setChoicesFromArray:@[@"Female", @"Male", @"Not specified"]];
     genderField.validationRequiresSelection = YES;
     genderField.validationRestrictedToChoiceValues = YES;
     [_registrationForm addFormField:genderField];
+    
+    /*
+     * Multi-selection field
+     */
+    EZFormMultiRadioFormField *likesField = [[EZFormMultiRadioFormField alloc] initWithKey:EZFDRegistrationFormLikesKey];
+    likesField.choices = @{
+                           @"everything" : @"Everything",
+                           @"pizza" : @"Pizza",
+                           @"pasta" : @"Pasta",
+                           @"bacon" : @"Bacon",
+                           @"salad" : @"Salad",
+                           @"cheese" : @"Cheese",
+                           @"tacos" : @"Tacos"
+                           };
+    likesField.mutuallyExclusiveChoice = @"everything";
+    [likesField setFieldValue:@"everything"];
+    [_registrationForm addFormField:likesField];
+    
+    /*
+     * Add an EZFormDateField instance to handle the date field.
+     * Enables a validation that requires date.  Correct date format set in inDateFormatter
+     */
+    EZFormDateField *dateField = [[EZFormDateField alloc] initWithKey:EZFDRegistrationFormDateKey];
+    [dateField addValidator:^BOOL(id value) {
+        return value != nil;
+    }];
+    [_registrationForm addFormField:dateField];
     
     /*
      * Add an EZFormTextField instance to handle the email address field.
@@ -126,36 +154,21 @@ static NSString * const EZFDRegistrationFormAcceptTermsKey = @"acceptterms";
     [_registrationForm addFormField:emailField];
     
     /*
-     *
+     * Boolean field
      */
     EZFormBooleanField *subscribeField = [[EZFormBooleanField alloc] initWithKey:EZFDRegistrationFormSubscribeKey];
     [subscribeField setFieldValue:@YES];
     [_registrationForm addFormField:subscribeField];
 
-    EZFormMultiRadioFormField *likesField = [[EZFormMultiRadioFormField alloc] initWithKey:EZFDRegistrationFormLikesKey];
-    likesField.choices = @{
-                           @"everything" : @"Everything",
-                           @"pizza" : @"Pizza",
-                           @"pasta" : @"Pasta",
-                           @"bacon" : @"Bacon",
-                           @"salad" : @"Salad",
-                           @"cheese" : @"Cheese",
-                           @"tacos" : @"Tacos"
-                           };
-    
-    likesField.mutuallyExclusiveChoice = @"everything";
-    [likesField setFieldValue:@"everything"];
-    [_registrationForm addFormField:likesField];
-    
     /*
-     *
+     * Multi-line text field
      */
     EZFormTextField *bioField = [[EZFormTextField alloc] initWithKey:EZFDRegistrationFormBioKey];
     bioField.inputMaxCharacters = 200;
     [_registrationForm addFormField:bioField];
     
     /*
-     *
+     * Boolean field
      */
     EZFormBooleanField *acceptTermsField = [[EZFormBooleanField alloc] initWithKey:EZFDRegistrationFormAcceptTermsKey];
     acceptTermsField.validationStates = EZFormBooleanFieldStateOn;
@@ -179,6 +192,9 @@ static NSString * const EZFDRegistrationFormAcceptTermsKey = @"acceptterms";
     [ageField useTextField:self.ageTextField];
     EZFormRadioField *genderField = [self.registrationForm formFieldForKey:EZFDRegistrationFormGenderKey];
     [genderField useLabel:self.genderFieldLabel];
+    EZFormDateField *dateField = [self.registrationForm formFieldForKey: EZFDRegistrationFormDateKey];
+    [dateField useTextField:self.dateTextField];
+    dateField.inputView = [UIDatePicker new];
     EZFormTextField *emailField = [self.registrationForm formFieldForKey:EZFDRegistrationFormEmailKey];
     [emailField useTextField:self.emailTextField];
     EZFormBooleanField *subscribeField = [self.registrationForm formFieldForKey:EZFDRegistrationFormSubscribeKey];
@@ -203,6 +219,7 @@ static NSString * const EZFDRegistrationFormAcceptTermsKey = @"acceptterms";
 		      EZFDRegistrationFormLastNameKey: self.lastnameTableViewCell,
 		      EZFDRegistrationFormAgeKey: self.ageTableViewCell,
 		      EZFDRegistrationFormGenderKey: self.genderTableViewCell,
+              EZFDRegistrationFormDateKey: self.dateTableViewCell,
 		      EZFDRegistrationFormEmailKey: self.emailTableViewCell,
 		      EZFDRegistrationFormBioKey: self.bioTableViewCell,
 		      EZFDRegistrationFormAcceptTermsKey: self.acceptTermsFieldTableViewCell,
@@ -240,6 +257,8 @@ static NSString * const EZFDRegistrationFormAcceptTermsKey = @"acceptterms";
     [self setBioTableViewCell:nil];
     [self setLikesFieldLabel:nil];
     [self setLikesFieldLabel:nil];
+    [self setDateTableViewCell:nil];
+    [self setDateTextField:nil];
     [super viewDidUnload];
     
     [self.registrationForm unwireUserViews];
@@ -355,6 +374,14 @@ static NSString * const EZFDRegistrationFormAcceptTermsKey = @"acceptterms";
 	[self registerAction:nil];
     }
 }
+
+- (void)form:(EZForm *)form fieldDidEndEditing:(EZFormField *)formField
+{
+    #pragma unused(form)
+
+    NSLog(@"formField:%@ didEndEditing",formField);
+}
+
 
 
 #pragma mark - Control actions

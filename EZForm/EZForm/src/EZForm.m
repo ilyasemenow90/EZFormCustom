@@ -428,6 +428,11 @@
     }
 }
 
+- (void)formFieldInputDidEnd:(EZFormField *)formField
+{
+    [self formFieldDidEndEditing:formField];
+}
+
 - (void)formFieldDidBeginEditing:(EZFormField *)formField
 {
     [self updateInputAccessoryForEditingFormField:formField];
@@ -435,6 +440,14 @@
     __strong id<EZFormDelegate> delegate = self.delegate;
     if ([delegate respondsToSelector:@selector(form:fieldDidBeginEditing:)]) {
 	[delegate form:self fieldDidBeginEditing:formField];
+    }
+}
+
+- (void)formFieldDidEndEditing:(EZFormField *)formField
+{
+    __strong id<EZFormDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(form:fieldDidEndEditing:)]) {
+        [delegate form:self fieldDidEndEditing:formField];
     }
 }
 

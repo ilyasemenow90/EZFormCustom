@@ -111,7 +111,7 @@
     textField.delegate = self;
     [textField addTarget:self action:@selector(textFieldEditingChanged:) forControlEvents:UIControlEventEditingChanged];
     [textField addTarget:self action:@selector(textFieldEditingDidEndOnExit:) forControlEvents:UIControlEventEditingDidEndOnExit];
-    [textField addTarget:self action:@selector(textFieldEditingDidEndNoExit:) forControlEvents:UIControlEventEditingDidEnd];
+    [textField addTarget:self action:@selector(textFieldEditingDidEnd:) forControlEvents:UIControlEventEditingDidEnd];
 }
 
 - (void)wireUpTextView
@@ -125,12 +125,7 @@
     EZFormInputControl *inputControl = (EZFormInputControl *)self.userControl;
     [inputControl addTarget:self action:@selector(inputControlEditingDidBegin:) forControlEvents:UIControlEventEditingDidBegin];
     [inputControl addTarget:self action:@selector(inputControlEditingDidEndOnExit:) forControlEvents:UIControlEventEditingDidEndOnExit];
-    [inputControl addTarget:self action:@selector(inputControlEditingDidEndNoExit:) forControlEvents:UIControlEventEditingDidEnd];
-}
-
-- (void)wireUpButton
-{
-    //nothing to do
+    [inputControl addTarget:self action:@selector(inputControlEditingDidEnd:) forControlEvents:UIControlEventEditingDidEnd];
 }
 
 - (void)wireUpUserControl
@@ -145,7 +140,6 @@
 	[self wireUpInputControl];
     }
     else if ([self.userControl isKindOfClass:[UIButton class]]) {
-    [self wireUpButton];
     }
     
 
@@ -164,7 +158,7 @@
     UITextField *textField = (UITextField *)self.userControl;
     [textField removeTarget:self action:@selector(textFieldEditingChanged:) forControlEvents:UIControlEventEditingChanged];
     [textField removeTarget:self action:@selector(textFieldEditingDidEndOnExit:) forControlEvents:UIControlEventEditingDidEndOnExit];
-    [textField removeTarget:self action:@selector(textFieldEditingDidEndNoExit:) forControlEvents:UIControlEventEditingDidEnd];
+    [textField removeTarget:self action:@selector(textFieldEditingDidEnd:) forControlEvents:UIControlEventEditingDidEnd];
     if (textField.delegate == self) textField.delegate = nil;
 }
 
@@ -225,6 +219,14 @@
     [form formFieldInputFinished:self];
 }
 
+- (void)textFieldEditingDidEnd:(id)sender
+{
+#pragma unused(sender)
+
+    __strong EZForm *form = self.form;
+    [form formFieldInputDidEnd:self];
+}
+
 
 #pragma mark - Input control events
 
@@ -248,6 +250,14 @@
     #pragma unused(sender)
     __strong EZForm *form = self.form;
     [form formFieldInputFinished:self];
+}
+
+- (void)inputControlEditingDidEnd:(id)sender
+{
+#pragma unused(sender)
+
+    __strong EZForm *form = self.form;
+    [form formFieldInputDidEnd:self];
 }
 
 
