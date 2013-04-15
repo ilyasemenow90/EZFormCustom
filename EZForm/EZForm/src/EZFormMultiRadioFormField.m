@@ -112,6 +112,28 @@
     }
 }
 
+-(void)setActualFieldValues:(NSArray *)values{
+    [self.selectedChoiceKeys removeAllObjects];
+    [self.selectedChoiceKeys addObjectsFromArray:values];
+}
+
+- (void)setFieldValues:(id)value
+{
+    [self setFieldValue:value canUpdateView:YES];
+}
+
+- (void)setFieldValues:(id)value canUpdateView:(BOOL)canUpdateView
+{
+    [(id<EZFormFieldConcrete>)self setActualFieldValue:value];
+    
+    if (canUpdateView && [(id<EZFormFieldConcrete>)self respondsToSelector:@selector(updateView)]) {
+        [(id<EZFormFieldConcrete>)self updateView];
+    }
+    
+    __strong EZForm *form = self.form;
+    [form formFieldDidChangeValue:self];
+}
+
 #pragma mark - EZFormFieldConcrete
 
 - (void)updateView

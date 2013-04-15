@@ -75,5 +75,8 @@
 - (void)unsetFieldValue:(id)value canUpdateView:(BOOL)canUpdateView;
 
 
+- (void)setFieldValues:(id)value;
+
+- (void)setFieldValues:(id)value canUpdateView:(BOOL)canUpdateView;
 
 @end
