@@ -451,6 +451,24 @@
     }
 }
 
+-(BOOL)formFieldShouldReturn:(EZFormField *)formField
+{
+    __strong id<EZFormDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(formFieldShouldReturn:)]) {
+        return [delegate formFieldShouldReturn:formField];
+    }
+    
+    return YES;
+}
+
+- (void)formFieldEditingCharacter:(EZFormField*)formField
+{
+    __strong id<EZFormDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(formFieldEditingCharacter:)]) {
+        [delegate formFieldEditingCharacter:formField];
+    }
+}
+
 
 #pragma mark - Input Accessories
 
@@ -503,7 +521,13 @@
 
 - (void)inputAccessoryViewDone
 {
+    __strong id<EZFormDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(formInputAccessoryViewDone:)]) {
+        [delegate formInputAccessoryViewDone:[self formFieldForFirstResponder]];
+    }
+    
     [self resignFirstResponder];
+    return;
 }
 
 - (void)inputAccessoryViewSelectedNextField

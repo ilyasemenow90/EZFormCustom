@@ -392,6 +392,9 @@
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
+    __strong EZForm *form = self.form;
+    [form formFieldEditingCharacter:self];
+    
     return [self formFieldWithText:textField.text shouldChangeCharactersInRange:range replacementString:string];
 }
 
@@ -399,7 +402,8 @@
 {
     #pragma unused(textField)
 
-    return YES;
+    __strong EZForm *form = self.form;
+    return [form formFieldShouldReturn:self];
 }
 
 
@@ -415,6 +419,8 @@
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
+    __strong EZForm *form = self.form;
+    [form formFieldEditingCharacter:self];
     return [self formFieldWithText:textView.text shouldChangeCharactersInRange:range replacementString:text];
 }
 

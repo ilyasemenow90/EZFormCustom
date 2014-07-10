@@ -45,11 +45,11 @@
     
     /* Draw triangle
      */
-    CGFloat padding = floorf(CGRectGetWidth(bounds) * 0.05f);
-    CGFloat lineWidth = floorf(CGRectGetWidth(bounds) * 0.075f);
+    CGFloat padding = floorf((float)CGRectGetWidth(bounds)*0.05f);
+    CGFloat lineWidth = floorf((float)CGRectGetWidth(bounds) * 0.075f);
     
     CGContextMoveToPoint(c, CGRectGetMinX(bounds) + padding, CGRectGetMaxY(bounds) - padding);
-    CGContextAddLineToPoint(c, floorf(CGRectGetMidX(bounds)), CGRectGetMinY(bounds) + padding);
+    CGContextAddLineToPoint(c, floorf((float)CGRectGetMidX(bounds)), CGRectGetMinY(bounds) + padding);
     CGContextAddLineToPoint(c, CGRectGetMaxX(bounds) - padding, CGRectGetMaxY(bounds) - padding);
     CGContextClosePath(c);
     
