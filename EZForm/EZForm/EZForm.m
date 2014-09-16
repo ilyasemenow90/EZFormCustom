@@ -511,7 +511,7 @@
 	EZFormField *previousFormField = [self firstResponderCapableFormFieldAfterField:formField searchForwards:NO];
 	EZFormField *nextFormField = [self firstResponderCapableFormFieldAfterField:formField searchForwards:YES];
 	[inputAccessoryView setNextActionEnabled:((nextFormField != nil)&&(CGRectGetHeight(nextFormField.userView.frame) > 0))];
-	[inputAccessoryView setPreviousActionEnabled:((previousFormField != nil)&&(CGRectGetHeight(nextFormField.userView.frame) > 0))];
+	[inputAccessoryView setPreviousActionEnabled:((previousFormField != nil)&&(CGRectGetHeight(previousFormField.userView.frame) > 0))];
     }
 }
 
